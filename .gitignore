@@ -1,0 +1,48 @@
+# Byte-compiled / Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# OS & IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets & Environment variables
+.env
+.env.local
+credentials/
+
+# SQLite Databases (Contains private financial data)
+*.db
+*.sqlite
+*.sqlite3
+
+# Bank Statements & PDF Files (Contains sensitive financial records)
+statements/
+*.pdf
+
+# Logs & Execution Traces
+logs/
+*.jsonl
+
+# Eval Runs & Generated Artifacts
+eval/runs/
+eval/history.csv
+
+# Build & Distribution
+build/
+dist/
+*.egg-info/
+

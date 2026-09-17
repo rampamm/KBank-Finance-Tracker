@@ -1,0 +1,36 @@
+{
+  "fixture_id": "kbank_page_1_clean",
+  "page_text": "Date: 01-09-26 Time: 11:05 Details: Ref X4912 อ่องเหวิน ข้าวมันไก่ Amount: 68.00 Balance: 27,493.72 Channel: EDC/K SHOP/MYQR\nDate: 01-09-26 Time: 14:20 Details: จ่ายบิล TRUE MONEY CO.,LTD. Amount: 150.00 Balance: 27,343.72 Channel: K PLUS\nDate: 02-09-26 Time: 09:15 Details: รับโอนจาก KBANK x1769 Amount: 1,000.00 Balance: 28,343.72 Channel: K PLUS",
+  "expected_transactions": [
+    {
+      "raw_date": "01-09-26",
+      "raw_time": "11:05",
+      "tx_type": "debit",
+      "raw_amount": "68.00",
+      "raw_balance": "27,493.72",
+      "channel": "EDC/K SHOP/MYQR",
+      "details": "Ref X4912 อ่องเหวิน ข้าวมันไก่",
+      "expected_category": "Food"
+    },
+    {
+      "raw_date": "01-09-26",
+      "raw_time": "14:20",
+      "tx_type": "debit",
+      "raw_amount": "150.00",
+      "raw_balance": "27,343.72",
+      "channel": "K PLUS",
+      "details": "จ่ายบิล TRUE MONEY CO.,LTD.",
+      "expected_category": "Bills & Utilities"
+    },
+    {
+      "raw_date": "02-09-26",
+      "raw_time": "09:15",
+      "tx_type": "credit",
+      "raw_amount": "1,000.00",
+      "raw_balance": "28,343.72",
+      "channel": "K PLUS",
+      "details": "รับโอนจาก KBANK x1769",
+      "expected_category": "Transfer to me"
+    }
+  ]
+}

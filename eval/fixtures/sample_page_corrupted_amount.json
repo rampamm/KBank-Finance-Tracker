@@ -1,0 +1,14 @@
+{
+  "fixture_id": "kbank_page_corrupted_amount",
+  "page_text": "Date: 01-09-26 Time: 11:05 Details: Ref X4912 Amount: 250.00 Balance: 5,000.00 Channel: K PLUS",
+  "hallucinated_transaction": {
+    "raw_date": "01-09-26",
+    "raw_time": "11:05",
+    "tx_type": "debit",
+    "raw_amount": "999.99",
+    "raw_balance": "5,000.00",
+    "channel": "K PLUS",
+    "details": "Ref X4912"
+  },
+  "expected_verbatim_fail": true
+}

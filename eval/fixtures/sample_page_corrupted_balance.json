@@ -1,0 +1,25 @@
+{
+  "fixture_id": "kbank_page_corrupted_balance",
+  "page_text": "Date: 01-09-26 Time: 11:05 Details: Ref X4912 Amount: 100.00 Balance: 10,000.00 Channel: K PLUS\nDate: 01-09-26 Time: 12:00 Details: Store Amount: 50.00 Balance: 9,800.00 Channel: K PLUS",
+  "expected_transactions": [
+    {
+      "raw_date": "01-09-26",
+      "raw_time": "11:05",
+      "tx_type": "debit",
+      "raw_amount": "100.00",
+      "raw_balance": "10,000.00",
+      "channel": "K PLUS",
+      "details": "Ref X4912"
+    },
+    {
+      "raw_date": "01-09-26",
+      "raw_time": "12:00",
+      "tx_type": "debit",
+      "raw_amount": "50.00",
+      "raw_balance": "9,800.00",
+      "channel": "K PLUS",
+      "details": "Store"
+    }
+  ],
+  "expected_balance_error_row": 1
+}

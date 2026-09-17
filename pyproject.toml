@@ -1,0 +1,26 @@
+[project]
+name = "finance-tracker"
+version = "0.1.0"
+description = "KBank statement PDF finance tracker built on LangChain deepagents"
+requires-python = ">=3.11"
+dependencies = [
+    "deepagents>=0.7,<0.8",
+    "langchain-openai>=1.6,<2.0",
+    "pypdf>=5.0,<7.0",
+    "python-dotenv>=1.0,<2.0",
+    "rapidfuzz>=3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["finance_tracker"]
+
+[tool.pytest.ini_options]
+markers = [
+    "eval: mark test as part of evaluation benchmark harness (deselect with '-m \"not eval\"')",
+]
+
+

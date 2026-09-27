@@ -66,22 +66,6 @@ class ParsedStatement(BaseModel):
     )
 
 
-# Backward-compatible model for single-transaction extraction
-class ParsedTransaction(BaseModel):
-    is_transaction: bool = Field(
-        description="True only if this reports a single completed money movement with a clear amount."
-    )
-    skip_reason: Optional[str] = Field(default=None)
-    raw_amount: Optional[str] = Field(default=None)
-    raw_fee: Optional[str] = Field(default=None)
-    raw_datetime: Optional[str] = Field(default=None)
-    transaction_number: Optional[str] = Field(default=None)
-    counterparty: Optional[str] = Field(default=None)
-    memo: Optional[str] = Field(default=None)
-    currency: str = Field(default="THB")
-
-
-
 class CategoryResult(BaseModel):
     category: str = Field(description="Best-matching category for the transaction memo or description.")
     confidence: float = Field(description="0.0-1.0 confidence in this category assignment.")

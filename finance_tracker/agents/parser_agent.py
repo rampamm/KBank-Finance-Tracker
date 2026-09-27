@@ -1,5 +1,5 @@
 """LLM-based parsing 'sub-agent': extracts structured transactions from
-bank statements (and legacy notification emails).
+bank statements.
 
 Because financial figures must never be guessed, every claimed raw_amount,
 raw_date, and raw_balance is checked for a verbatim substring match against
@@ -8,16 +8,11 @@ and queued for review, not silently accepted.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from deepagents import create_deep_agent
 
 from finance_tracker.config import PARSER_MODEL
-from finance_tracker.models import (
-    ParsedStatement,
-    ParsedTransaction,
-    StatementTransaction,
-)
+from finance_tracker.models import ParsedStatement, StatementTransaction
 
 STATEMENT_PARSER_SYSTEM_PROMPT = """You are a precision financial bank statement extractor for Thai bank statements (Kasikornbank / KBank).
 
@@ -51,36 +46,6 @@ Extraction Rules:
 """
 
 
-# Legacy email parser prompt (unused - statement ingestion uses STATEMENT_PARSER_SYSTEM_PROMPT)
-# EMAIL_PARSER_SYSTEM_PROMPT = """You are a careful financial-email field extractor.
-#
-# You will be given the raw body of one email from a Thai bank (KBank). Decide
-# whether it reports a single, already-completed (successful) transaction with
-# a clear amount -- not a failed/pending transfer, not marketing, not a
-# general alert.
-#
-# If it is a completed transaction, extract fields EXACTLY as they appear in
-# the text:
-# - raw_amount and raw_fee: copy the digits/punctuation verbatim, do not
-#   reformat, round, or recompute them.
-# - raw_datetime: copy the date/time text verbatim, do not reorder or
-#   reformat it.
-# - transaction_number, counterparty: copy verbatim if present.
-# - memo: only set this if the email actually contains a distinct user-entered
-#   note/description field. Many emails do not have one -- in that case leave
-#   memo null. Never invent a memo from the counterparty name or transaction
-#   type.
-#
-# If the email is bilingual, prefer the English-labeled section for accuracy,
-# but the values must still match what's in the email verbatim.
-#
-# If this is not a completed transaction (e.g. failed, pending, or not a
-# transaction email at all), set is_transaction to false and give a short
-# skip_reason. Do not fabricate any fields in that case.
-# """
-
-
-
 def _normalize_text(s: str) -> str:
     return " ".join(s.split())
 
@@ -98,20 +63,6 @@ def verify_statement_tx_verbatim(source_text: str, tx: StatementTransaction) -> 
     return failures
 
 
-# Legacy email verbatim check (unused - active function is verify_statement_tx_verbatim)
-# def _verify_verbatim(raw_email_text: str, parsed: ParsedTransaction) -> list[str]:
-#     haystack = _normalize_text(raw_email_text)
-#     failures = []
-#     for field_name in ("raw_amount", "raw_fee", "raw_datetime", "transaction_number"):
-#         value = getattr(parsed, field_name)
-#         if value is None:
-#             continue
-#         if _normalize_text(value) not in haystack:
-#             failures.append(field_name)
-#     return failures
-
-
-
 @dataclass
 class VerifiedStatementTx:
     tx: StatementTransaction
@@ -126,15 +77,7 @@ class StatementParseOutcome:
     verified_transactions: list[VerifiedStatementTx]
 
 
-@dataclass
-class ParseOutcome:
-    parsed: ParsedTransaction
-    verbatim_ok: bool
-    verbatim_failures: list[str]
-
-
 _statement_agent = None
-_email_agent = None
 
 
 def _get_statement_agent():
@@ -288,23 +231,4 @@ def parse_statement_page(
 
     parsed.transactions = [v.tx for v in verified]
     return StatementParseOutcome(parsed=parsed, verified_transactions=verified)
-
-
-
-# def parse_email(raw_email_text: str, subject: str, sender: str) -> ParseOutcome:
-#     """Legacy parser for single transaction notification emails."""
-#     agent = _get_email_agent()
-#     task = (
-#         f"Email subject: {subject}\n"
-#         f"Email sender: {sender}\n\n"
-#         f"Email body:\n{raw_email_text}"
-#     )
-#     result = agent.invoke({"messages": [{"role": "user", "content": task}]})
-#     parsed: ParsedTransaction = result["structured_response"]
-#
-#     if not parsed.is_transaction:
-#         return ParseOutcome(parsed=parsed, verbatim_ok=True, verbatim_failures=[])
-#
-#     failures = _verify_verbatim(raw_email_text, parsed)
-#     return ParseOutcome(parsed=parsed, verbatim_ok=len(failures) == 0, verbatim_failures=failures)
 

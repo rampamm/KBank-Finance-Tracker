@@ -19,11 +19,6 @@ CREATE TABLE IF NOT EXISTS processed_statements (
     processed_at     TEXT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS processed_emails (
-    gmail_message_id TEXT PRIMARY KEY,
-    processed_at     TEXT NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS transactions (
     id                   INTEGER PRIMARY KEY AUTOINCREMENT,
     statement_hash       TEXT,
@@ -146,23 +141,6 @@ def delete_processed_statement(conn, statement_hash: str):
         (statement_hash,),
     )
 
-
-
-# --- processed_emails (legacy compatibility) ---------------------------
-
-
-def is_email_processed(conn, gmail_message_id: str) -> bool:
-    row = conn.execute(
-        "SELECT 1 FROM processed_emails WHERE gmail_message_id = ?", (gmail_message_id,)
-    ).fetchone()
-    return row is not None
-
-
-def mark_email_processed(conn, gmail_message_id: str):
-    conn.execute(
-        "INSERT OR IGNORE INTO processed_emails (gmail_message_id, processed_at) VALUES (?, ?)",
-        (gmail_message_id, now_iso()),
-    )
 
 
 # --- payee_category_map --------------------------------------------------

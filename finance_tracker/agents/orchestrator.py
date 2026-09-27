@@ -37,15 +37,6 @@ class StatementIngestStats:
     total_credit: float = 0.0
 
 
-@dataclass
-class IngestStats:
-    scanned: int = 0
-    inserted: int = 0
-    skipped_not_transaction: int = 0
-    skipped_already_processed: int = 0
-    queued_for_review: int = 0
-
-
 def _normalize_datetime(raw_date: str | None, raw_time: str | None = None) -> str | None:
     """Best-effort normalize date and optional time to 'YYYY-MM-DD HH:MM:SS'
     for monthly grouping. Returns None if the format isn't recognized."""
@@ -427,12 +418,4 @@ def run_statement_ingest(
         )
 
     return stats
-
-
-# Legacy email ingest entry point (deprecated - bank statement ingestion via run_statement_ingest is the active pipeline)
-def run_ingest(max_results: int = 25) -> IngestStats:
-    """Deprecated: Email ingestion has been removed in favor of statement PDF ingestion."""
-    raise NotImplementedError(
-        "Email ingestion has been deprecated. Please use run_statement_ingest(pdf_path) instead."
-    )
 

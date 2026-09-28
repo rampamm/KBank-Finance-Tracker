@@ -44,7 +44,7 @@ def cmd_review(args):
             print(f"{len(spot_checks)} transaction(s) flagged for spot check (medium confidence).\n")
             for row in spot_checks:
                 print("-" * 50)
-                tag = row["channel"] or row["email_subject"] or "Statement TX"
+                tag = row["channel"] or "Statement TX"
                 tx_type = row["tx_type"] or "debit"
                 print(f"Transaction #{row['id']} [{tag}] ({tx_type})")
                 print(f"  Amount:       {row['amount']} {row['currency']}")
@@ -79,7 +79,7 @@ def cmd_review(args):
         print(f"{len(pending)} item(s) pending review.\n")
         for row in pending:
             print("-" * 50)
-            tag = row["channel"] or row["email_subject"] or "Statement TX"
+            tag = row["channel"] or "Statement TX"
             tx_type = row["tx_type"] or "debit"
             print(f"Transaction #{row['id']} [{tag}] ({tx_type})")
             print(f"  Amount:       {row['amount']} {row['currency']}")

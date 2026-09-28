@@ -23,9 +23,6 @@ CREATE TABLE IF NOT EXISTS transactions (
     id                   INTEGER PRIMARY KEY AUTOINCREMENT,
     statement_hash       TEXT,
     statement_row_index  INTEGER,
-    gmail_message_id     TEXT,
-    transaction_number   TEXT,
-    email_subject        TEXT,
     transaction_datetime TEXT,
     tx_type              TEXT DEFAULT 'debit',
     amount               REAL NOT NULL,
@@ -208,9 +205,6 @@ def insert_transaction(
     *,
     statement_hash: Optional[str] = None,
     statement_row_index: Optional[int] = None,
-    gmail_message_id: Optional[str] = None,
-    transaction_number: Optional[str] = None,
-    email_subject: Optional[str] = None,
     transaction_datetime: Optional[str] = None,
     tx_type: str = "debit",
     amount: float,
@@ -227,18 +221,14 @@ def insert_transaction(
 ) -> int:
     cur = conn.execute(
         """INSERT INTO transactions (
-            statement_hash, statement_row_index, gmail_message_id,
-            transaction_number, email_subject, transaction_datetime,
+            statement_hash, statement_row_index, transaction_datetime,
             tx_type, amount, balance, fee, currency, channel,
             counterparty, memo, category, parser_retry_count,
             needs_spot_check, raw_extracted_json, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
         (
             statement_hash,
             statement_row_index,
-            gmail_message_id,
-            transaction_number,
-            email_subject,
             transaction_datetime,
             tx_type,
             amount,
